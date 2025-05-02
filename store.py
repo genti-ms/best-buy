@@ -1,75 +1,40 @@
-from products import Product
-
 class Store:
-    def __init__(self, products=None):
-        """
-        Initializes the store with an optional list of products.
+    """
+    Manages products and orders in the store.
+    """
 
-        Args:
-            products (list): A list of Product objects to initialize the store with.
-        """
-        if products is None:
-            products = []
+    def __init__(self, products):
         self.products = products
 
-    def add_product(self, product: Product):
+    def add_product(self, product):
         """
-        Adds a new product to the store.
-
-        Args:
-            product (Product): The product to add.
-
-        Raises:
-            TypeError: If the product is not an instance of the Product class.
+        Add a new product to the store.
         """
-        if not isinstance(product, Product):
-            raise TypeError("Only Product instances can be added.")
         self.products.append(product)
 
-    def remove_product(self, product: Product):
+    def remove_product(self, product):
         """
-        Removes a product from the store.
+        Remove a product from the store.
+        """
+        self.products.remove(product)
 
-        Args:
-            product (Product): The product to remove.
+    def get_total_quantity(self):
         """
-        if product in self.products:
-            self.products.remove(product)
-
-    def get_total_quantity(self) -> int:
+        Get total quantity of all active products.
         """
-        Returns the total quantity of all products in the store.
-
-        Returns:
-            int: The total quantity of all products.
-        """
-        return sum(product.get_quantity() for product in self.products)
+        return sum(p.quantity for p in self.products if p.is_active())
 
     def get_all_products(self):
         """
-        Returns a list of all active products in the store.
-
-        Returns:
-            list: List of active Product objects.
+        Get a list of all active products.
         """
-        return [product for product in self.products if product.quantity > 0]
+        return [p for p in self.products if p.is_active()]
 
     def order(self, shopping_list):
         """
-        Processes an order by reducing the stock of the purchased products and calculating the total price.
-
-        Args:
-            shopping_list (list): A list of tuples (product, quantity) to purchase.
-
-        Returns:
-            float: The total price of the order.
-
-        Raises:
-            Exception: If any product is not active.
+        Process an order consisting of (product, quantity) pairs.
         """
-        total_price = 0.0
+        total = 0
         for product, quantity in shopping_list:
-            if not product.is_active():
-                raise Exception(f"The product {product.name} is not active.")
-            total_price += product.buy(quantity)
-        return total_price
+            total += product.buy(quantity)
+        return total
