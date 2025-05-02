@@ -52,7 +52,7 @@ class Store:
         Returns:
             list: List of active Product objects.
         """
-        return [product for product in self.products if product.is_active()]
+        return [product for product in self.products if product.quantity > 0]
 
     def order(self, shopping_list):
         """
