@@ -1,32 +1,35 @@
 class Product:
     """
-    Represents a product in the store.
+    Class representing a product in the store.
     """
 
-    def __init__(self, name: str, price: float, quantity: int):
-        if price < 0 or quantity < 0:
-            raise ValueError("Price and quantity must be non-negative.")
+    def __init__(self, name, price, quantity):
+        """
+        Initializes a new product.
+
+        Args:
+            name (str): The name of the product.
+            price (float): The price of the product.
+            quantity (int): The quantity of the product in stock.
+        """
         self.name = name
         self.price = price
         self.quantity = quantity
-        self.active = True
-
-    def activate(self):
-        self.active = True
-
-    def deactivate(self):
-        self.active = False
-
-    def is_active(self):
-        return self.active
 
     def show(self):
+        """
+        Shows the details of the product.
+
+        Returns:
+            str: The product details as a string.
+        """
         return f"{self.name}, Price: ${self.price}, Quantity: {self.quantity}"
 
-    def buy(self, quantity: int):
-        if quantity > self.quantity:
-            raise ValueError("Not enough stock.")
-        self.quantity -= quantity
-        if self.quantity == 0:
-            self.deactivate()
-        return self.price * quantity
+    def update_quantity(self, amount):
+        """
+        Update the quantity of the product.
+
+        Args:
+            amount (int): The amount to be added/subtracted from the product quantity.
+        """
+        self.quantity += amount

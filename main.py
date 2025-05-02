@@ -1,8 +1,22 @@
 import products
 import store
 
+def show_menu():
+    """
+    Displays the main menu.
+    """
+    print("\n   Store Menu              ")
+    print("   ----------   ")
+    print("1. List all products in store")
+    print("2. Show total amount in store")
+    print("3. Make an order")
+    print("4. Quit")
+
+
 def list_products(best_buy):
-    """List all products in the store."""
+    """
+    Lists all products in the store.
+    """
     all_products = best_buy.get_all_products()
     print("------")
     for idx, product in enumerate(all_products, 1):
@@ -10,14 +24,22 @@ def list_products(best_buy):
     print("------")
 
 
-def show_total(best_buy):
-    """Show total number of items in the store."""
-    total_quantity = best_buy.get_total_quantity()
+def show_total_amount(best_buy):
+    """
+    Displays the total quantity of all products in the store.
+    """
+    # Get all products from the store
+    all_products = best_buy.get_all_products()  # Changed variable name to avoid conflict
+
+    # Pass the products list to the static method get_total_quantity
+    total_quantity = best_buy.get_total_quantity(all_products)
     print(f"\nTotal of {total_quantity} items in store")
 
 
 def make_order(best_buy):
-    """Handle making an order from the store."""
+    """
+    Allows the user to make an order.
+    """
     products_list = best_buy.get_all_products()
     print("------")
     for idx, product in enumerate(products_list, 1):
@@ -44,50 +66,52 @@ def make_order(best_buy):
                 continue
 
             shopping_list.append((products_list[product_index], quantity))
-            print("Product added to list!")
+            print("Product added to list!\n")
 
-        except ValueError:
-            print("Invalid input, please enter numbers.")
+        except ValueError as error:
+            print(f"Error: {error}")
 
     if shopping_list:
         try:
             total_price = best_buy.order(shopping_list)
-            print(f"********\nOrder made! Total payment: ${int(total_price)}")
+            print(f"\n********\nOrder made! Total payment: ${total_price}\n")
         except ValueError as error:
             print(f"Error: {error}")
 
 
-def start(best_buy):
-    """Start the store user interface."""
-    while True:
-        print("\n    Store Menu")
-        print("    ----------")
-        print("1. List all products in store")
-        print("2. Show total amount in store")
-        print("3. Make an order")
-        print("4. Quit")
+def start():
+    """
+    Starts the user interface for the store.
+    Displays the main menu and processes user input.
+    """
+    # Sets up the initial product inventory
+    product_list = [
+        products.Product("MacBook Air M2", price=1450, quantity=100),
+        products.Product("Bose QuietComfort Earbuds", price=250, quantity=500),
+        products.Product("Google Pixel 7", price=500, quantity=250)
+    ]
+    best_buy = store.Store(product_list)
 
+    while True:
+        show_menu()
         choice = input("Please choose a number: ")
 
         if choice == "1":
             list_products(best_buy)
+
         elif choice == "2":
-            show_total(best_buy)
+            show_total_amount(best_buy)
+
         elif choice == "3":
             make_order(best_buy)
+
         elif choice == "4":
             print("Goodbye!")
             break
+
         else:
             print("Invalid choice, please try again.")
 
 
-product_list = [
-    products.Product("MacBook Air M2", price=1450, quantity=100),
-    products.Product("Bose QuietComfort Earbuds", price=250, quantity=500),
-    products.Product("Google Pixel 7", price=500, quantity=250)
-]
-best_buy = store.Store(product_list)
-
 if __name__ == "__main__":
-    start(best_buy)
+    start()
