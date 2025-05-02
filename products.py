@@ -3,45 +3,30 @@ class Product:
     Represents a product in the store.
     """
 
-    def __init__(self, name, price, quantity):
+    def __init__(self, name: str, price: float, quantity: int):
         if price < 0 or quantity < 0:
             raise ValueError("Price and quantity must be non-negative.")
         self.name = name
         self.price = price
         self.quantity = quantity
-
-    def show(self):
-        """
-        Return a string representation of the product.
-        """
-        return f"{self.name}, Price: ${self.price}, Quantity: {self.quantity}"
-
-    def is_active(self):
-        """
-        Check if the product is active (quantity > 0).
-        """
-        return self.quantity > 0
+        self.active = True
 
     def activate(self):
-        """
-        Activate the product.
-        """
-        if self.quantity == 0:
-            self.quantity = 1
+        self.active = True
 
     def deactivate(self):
-        """
-        Deactivate the product.
-        """
-        self.quantity = 0
+        self.active = False
 
-    def buy(self, quantity):
-        """
-        Process the purchase of a quantity of this product.
-        """
-        if quantity <= 0:
-            raise ValueError("Quantity must be positive.")
+    def is_active(self):
+        return self.active
+
+    def show(self):
+        return f"{self.name}, Price: ${self.price}, Quantity: {self.quantity}"
+
+    def buy(self, quantity: int):
         if quantity > self.quantity:
-            raise ValueError("Not enough quantity in stock.")
+            raise ValueError("Not enough stock.")
         self.quantity -= quantity
+        if self.quantity == 0:
+            self.deactivate()
         return self.price * quantity
