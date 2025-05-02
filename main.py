@@ -12,8 +12,8 @@ def start(best_buy: store.Store):
     """
     while True:
         # Display the menu options
-        print("\nStore Menu")
-        print("----------")
+        print("\n   Store Menu      ")
+        print("   ----------")
         print("1. List all products in store")
         print("2. Show total amount in store")
         print("3. Make an order")
