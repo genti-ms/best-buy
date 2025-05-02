@@ -1,30 +1,15 @@
 class Product:
-    """
-    The Product class represents a specific product with attributes like name, price, and quantity.
-    It includes methods for managing the product's stock and handling purchases.
-
-    Attributes:
-        name (str): The name of the product.
-        price (float): The price of the product.
-        quantity (int): The available quantity of the product in the store.
-        active (bool): Whether the product is currently available for sale (True or False).
-    """
-
     def __init__(self, name: str, price: float, quantity: int):
         """
-        Initialize the Product instance with the specified name, price, and quantity.
-        If any of the values are invalid, a ValueError is raised.
+        Initializes a product with the specified name, price, and quantity.
 
         Args:
             name (str): The name of the product.
             price (float): The price of the product.
-            quantity (int): The quantity of the product available in stock.
-
-        Raises:
-            ValueError: If the name is empty or the price or quantity are negative.
+            quantity (int): The quantity of the product in stock.
         """
         if not name or price < 0 or quantity < 0:
-            raise ValueError("Invalid values for products")
+            raise ValueError("Invalid values for product")
 
         self.name = name
         self.price = price
@@ -33,22 +18,22 @@ class Product:
 
     def get_quantity(self) -> int:
         """
-        Getter method for the product quantity.
+        Returns the quantity of the product in stock.
 
         Returns:
-            int: The current quantity of the product.
+            int: The quantity of the product.
         """
         return self.quantity
 
     def set_quantity(self, quantity: int):
         """
-        Setter method for the product quantity. If the quantity is set to 0, the product is deactivated.
+        Sets a new quantity for the product and deactivates it if quantity is zero.
 
         Args:
-            quantity (int): The new quantity to set for the product.
+            quantity (int): The new quantity to set.
 
         Raises:
-            ValueError: If the quantity is negative.
+            ValueError: If quantity is negative.
         """
         if quantity < 0:
             raise ValueError("Quantity cannot be negative.")
@@ -59,48 +44,43 @@ class Product:
 
     def is_active(self) -> bool:
         """
-        Checks if the product is active.
+        Returns whether the product is active (i.e., in stock).
 
         Returns:
-            bool: True if the product is active, otherwise False.
+            bool: True if the product is active, False otherwise.
         """
         return self.active
 
     def activate(self):
-        """
-        Activates the product, making it available for purchase.
-        """
+        """Activate the product (make it available for purchase)."""
         self.active = True
 
     def deactivate(self):
-        """
-        Deactivates the product, making it unavailable for purchase.
-        """
+        """Deactivate the product (remove it from being available for purchase)."""
         self.active = False
 
     def show(self) -> str:
         """
-        Returns a string representation of the product.
+        Returns a string representation of the product, including name, price, and quantity.
 
         Returns:
-            str: A string representing the product with its name, price, and quantity.
+            str: Product details.
         """
-        return f"{self.name}, Price: {self.price}, Quantity: {self.quantity}"
+        return f"{self.name}, Price: ${self.price}, Quantity: {self.quantity}"
 
     def buy(self, quantity: int) -> float:
         """
-        Purchases a certain quantity of the product, decreasing the stock and returning the total price.
-        If there is not enough stock, an exception is raised.
+        Simulates buying a certain quantity of the product, deducting from stock and returning the total price.
 
         Args:
-            quantity (int): The quantity of the product to purchase.
+            quantity (int): The quantity to buy.
 
         Returns:
-            float: The total price of the purchase.
+            float: The total price for the purchased quantity.
 
         Raises:
-            ValueError: If the purchase quantity is zero or negative.
-            Exception: If the requested quantity exceeds the available stock.
+            ValueError: If quantity is less than or equal to zero.
+            Exception: If there is insufficient stock.
         """
         if quantity <= 0:
             raise ValueError("Purchase quantity must be positive.")
@@ -112,29 +92,3 @@ class Product:
             self.deactivate()
 
         return self.price * quantity
-
-
-# Test code - Example usage of the Product class
-if __name__ == "__main__":
-    # Create two product instances with specified names, prices, and quantities
-    bose = Product("Bose QuietComfort Earbuds", price=250, quantity=500)
-    mac = Product("MacBook Air M2", price=1450, quantity=100)
-
-    # Purchase 50 Bose earbud products
-    print(bose.buy(50))
-
-    # Purchase 100 MacBook Air M2 products
-    print(mac.buy(100))
-
-    # Check if the MacBook Air M2 product is active after purchase
-    print(mac.is_active())
-
-    # Display product information for Bose earbud and MacBook Air M2
-    bose.show()
-    mac.show()
-
-    # Set the quantity of Bose earbud products to 1000
-    bose.set_quantity(1000)
-
-    # Display updated information for the Bose earbud product
-    bose.show()
